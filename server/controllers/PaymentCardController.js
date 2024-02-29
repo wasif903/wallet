@@ -1,5 +1,6 @@
 import Stripe from 'stripe'
 import User from '../models/User.js';
+import PaymentCard from '../models/PaymentCard.js';
 
 const stripe = new Stripe(`sk_test_51NIBAcI5fPUI3rtcXN5xKVgHbMKlzfZIe8CXlzCcLFImc6H7Ks2lZP3SWElN1UvcgKWxbSgmYB0Sz8zp8G913IIf00wh2wfIGv`)
 
@@ -17,6 +18,15 @@ const createCardHandler = async (req, res) => {
         const attachPayment = await stripe.paymentMethods.attach(req.body.payment_method, {
             customer: customer.id,
         })
+        const createCard = new PaymentCard({
+            userID: findUser._id,
+            tokenID: req.body.tokenID,
+            customerID: customer.id,
+            paymentMethodID: req.body.payment_method,
+            attachPaymentID: attachPayment.id
+        })
+        await createCard.save();
+        res.status(200).json({ createCard, message: "Card Saved Successfully" })
         console.log(attachPayment);
     } catch (error) {
         console.log(error);
