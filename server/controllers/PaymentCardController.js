@@ -35,4 +35,28 @@ const createCardHandler = async (req, res) => {
 }
 
 
-export { createCardHandler }
+const getCardDetails = async (req, res) => {
+    try {
+        const { userID } = req.params;
+        const findUser = await User.findById(userID);
+        if (!findUser) {
+            return res.status(404).json({ message: "User Not Found" })
+        }
+        const findCardPayment = await PaymentCard.findOne({ userID: userID })
+        if (!findCardPayment) {
+            return res.status(404).json({ message: "No Card Added Yet" })
+        }
+        const customer = await stripe.customers.retrieve(findCardPayment.customerID);
+        const paymentMethod = await stripe.paymentMethods.retrieve(findCardPayment.attachPaymentID);
+
+        res.status(200).json({ customer, paymentMethod })
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal Server Error" })
+    }
+}
+
+
+export { createCardHandler, getCardDetails }
