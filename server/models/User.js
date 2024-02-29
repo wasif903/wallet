@@ -23,7 +23,7 @@ const UserSchema = new Schema({
     role: {
         type: [String],
         enum: ["SuperAdmin", "BrandOwner", "Influencer"],
-        default: ["User"],
+        default: ["Influencer"],
         require: true
     },
 });

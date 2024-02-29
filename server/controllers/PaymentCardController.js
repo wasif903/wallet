@@ -1,5 +1,5 @@
 import Stripe from 'stripe'
-import User from '../models/User';
+import User from '../models/User.js';
 
 const stripe = new Stripe(`sk_test_51NIBAcI5fPUI3rtcXN5xKVgHbMKlzfZIe8CXlzCcLFImc6H7Ks2lZP3SWElN1UvcgKWxbSgmYB0Sz8zp8G913IIf00wh2wfIGv`)
 
