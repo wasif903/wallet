@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-const UserSchema = new Schema({
+const PaymentCard = new Schema({
     name: {
         type: String,
         required: true
@@ -22,10 +22,10 @@ const UserSchema = new Schema({
     },
     role: {
         type: [String],
-        enum: ["SuperAdmin", "BrandOwner", "Influencer"],
+        enum: ["Admin", "User", "Partnerhip"],
         default: ["User"],
         require: true
     },
 });
 
-export default mongoose.model("users", UserSchema);
+export default mongoose.model("cards", PaymentCard);
