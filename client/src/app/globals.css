@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--primary-color: #3f9fc8;
+	--text-primary-color: #0797b7;
+	--white-color: #fff;
+}
+
+/* TypoGraphy */
+
+h1 {
+	font-size: clamp(1.5rem, 5vw, 2.5rem) !important;
+	font-weight: bold !important;
+	line-height: 1 !important;
+	letter-spacing: -1px;
+}
+h2 {
+	font-size: clamp(1.3rem, 2vw, 1.85rem) !important;
+	font-weight: bold !important;
+	line-height: 1.06 !important;
+	letter-spacing: -0.8px;
+}
+p {
+	font-size: clamp(0.8rem, 2vw, 1rem);
+}
