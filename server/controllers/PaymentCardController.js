@@ -22,7 +22,6 @@ const createCardHandler = async (req, res) => {
             userID: findUser._id,
             tokenID: req.body.tokenID,
             customerID: customer.id,
-            paymentMethodID: req.body.payment_method,
             attachPaymentID: attachPayment.id
         })
         await createCard.save();

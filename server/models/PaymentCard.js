@@ -15,10 +15,7 @@ const PaymentCard = new Schema({
         type: String,
         require: true
     },
-    paymentMethodID: {
-        type: String,
-        require: true
-    },
+
     attachPaymentID: {
         type: String,
         require: true
