@@ -6,7 +6,6 @@ const auth = createApi({
 	baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
 	endpoints: (builder) => ({
 
-
 		login: builder.mutation({
 			query: (data) => {
 				return {
@@ -16,7 +15,6 @@ const auth = createApi({
 				};
 			},
 		}),
-
 
 	}),
 });
