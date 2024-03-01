@@ -8,8 +8,12 @@ const createCardHandler = async (req, res) => {
     try {
         const { userID } = req.body;
         const findUser = await User.findById(userID);
+        const isCardAlreadyExists = await PaymentCard.findOne({ userID: userID });
         if (!findUser) {
             return res.status(404).json({ message: "User Doesn't Exist With This Email" })
+        }
+        if (isCardAlreadyExists) {
+            return res.status(400).json({ message: "You can add only one card to your account" })
         }
         const customer = await stripe.customers.create({
             email: findUser.email.toString(),
