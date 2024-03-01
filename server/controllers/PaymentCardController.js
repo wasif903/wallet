@@ -45,11 +45,12 @@ const getCardDetails = async (req, res) => {
         if (!findCardPayment) {
             return res.status(404).json({ message: "No Card Added Yet" })
         }
+
         const customer = await stripe.customers.retrieve(findCardPayment.customerID);
+
         const paymentMethod = await stripe.paymentMethods.retrieve(findCardPayment.attachPaymentID);
 
         res.status(200).json({ customer, paymentMethod })
-
 
     } catch (error) {
         console.log(error);
