@@ -4,6 +4,7 @@ import Field from '@/components/inputFIeld/Field'
 import ResponseToast from '@/components/toast/Toast'
 import AuthLayout from '@/layout/AuthLayout'
 import { useLoginMutation } from '@/redux/auth/auth'
+import { setCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
@@ -33,6 +34,11 @@ const page = () => {
             const res = await login(loginFields)
 
             ResponseToast({ res: res })
+
+            if (!res.error) {
+                setCookie('wallet', res?.data?.cookie)
+                router.push('/payment')
+            }
 
         } catch (error) {
             ResponseToast({ message: "Failed To Login" })
