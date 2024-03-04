@@ -11,6 +11,7 @@ import databases from './db.js'
 // @ROUTES
 import User from "./routes/User.js";
 import PaymentCardRoutes from "./routes/PaymentCardRoutes.js";
+import TransactionRoutes from "./routes/TransactionRoutes.js";
 
 
 dotenv.config();
@@ -40,6 +41,7 @@ const Port = process.env.PORT;
 
 app.use("/auth", User)
 app.use('/api', PaymentCardRoutes)
+app.use('/api', TransactionRoutes)
 
 app.use(ErrorHandler)
 

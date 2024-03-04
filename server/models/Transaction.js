@@ -3,11 +3,11 @@ const { Schema } = mongoose;
 
 const TransactionSchema = new Schema({
 
-    senderID: {
+    brandID: {
         type: Schema.Types.ObjectId,
         ref: "users",
     },
-    receiverID: {
+    influencerID: {
         type: Schema.Types.ObjectId,
         ref: "users",
     },
@@ -15,7 +15,7 @@ const TransactionSchema = new Schema({
         type: Number,
         require: true
     },
-    
+
 }, { timestamps: true });
 
 export default mongoose.model("transactions", TransactionSchema);

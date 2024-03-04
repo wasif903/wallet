@@ -203,7 +203,8 @@ const handleResendOtp = async (req, res) => {
 const getAllUsers = async (req, res) => {
     try {
         const findUsers = await User.find();
-        res.status(200).json({ users: findUsers });
+        const filteredData = findUsers.filter((item) => !item.role.includes('SuperAdmin'));
+        res.status(200).json({ users: filteredData });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Internal Server Error" })
