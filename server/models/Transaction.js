@@ -11,10 +11,19 @@ const TransactionSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "users",
     },
+    paymentIntentConfirm: {
+        type: String,
+        default: ""
+    },
     amount: {
         type: Number,
         require: true
     },
+    status: {
+        type: [String],
+        enum: ["Pending", "In Progress", "Completed", "Cancelled"],
+        default: ["Pending"]
+    }
 
 }, { timestamps: true });
 
