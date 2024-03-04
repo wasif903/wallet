@@ -2,7 +2,7 @@ import Stripe from 'stripe'
 import User from '../models/User.js';
 import PaymentCard from '../models/PaymentCard.js';
 
-const stripe = new Stripe(`sk_test_51NIBAcI5fPUI3rtcXN5xKVgHbMKlzfZIe8CXlzCcLFImc6H7Ks2lZP3SWElN1UvcgKWxbSgmYB0Sz8zp8G913IIf00wh2wfIGv`)
+const stripe = new Stripe(`sk_test_51MtaX3EaztW7P3dwiX6ijhW1VXF93l6EgYzsC21gLAXpJw8t6vHHtwbok51jDdsyHNmyZ4KtPAngLVbQX1kNquF600xjb72Rkx`)
 
 const createCardHandler = async (req, res) => {
     try {
@@ -26,6 +26,7 @@ const createCardHandler = async (req, res) => {
             userID: findUser._id,
             tokenID: req.body.tokenID,
             customerID: customer.id,
+            paymentMethodID: req.body.payment_method,
             attachPaymentID: attachPayment.id
         })
         await createCard.save();
@@ -49,12 +50,11 @@ const getCardDetails = async (req, res) => {
         if (!findCardPayment) {
             return res.status(404).json({ message: "No Card Added Yet" })
         }
-
         const customer = await stripe.customers.retrieve(findCardPayment.customerID);
-
         const paymentMethod = await stripe.paymentMethods.retrieve(findCardPayment.attachPaymentID);
 
         res.status(200).json({ customer, paymentMethod })
+
 
     } catch (error) {
         console.log(error);
@@ -63,4 +63,22 @@ const getCardDetails = async (req, res) => {
 }
 
 
-export { createCardHandler, getCardDetails }
+const getStripeDetails = async (req, res) => {
+    try {
+        const { userID } = req.params;
+        const findUser = await User.findById(userID);
+        if (!findUser) {
+            return res.status(404).json({ message: "User Not Found" })
+        }
+        if (!findUser.role.includes("SuperAdmin")) {
+            return res.status(400).json({ message: "Unauthorized Request" })
+        }
+        const balance = await stripe.balance.retrieve()
+        res.status(200).json({ balance })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal Server Error" })
+    }
+}
+
+export { createCardHandler, getCardDetails, getStripeDetails }

@@ -7,7 +7,7 @@ import React from 'react'
 
 const page = () => {
 
-    const stripePromis = loadStripe(`pk_test_51NIBAcI5fPUI3rtcDUlfJLzWwzLSxtbyJjdlhg9sAeXXyk8Lblm0uUQUIkLGFD1wx4GeDZs7Fwxh55i5US7okdA200CgK46sm6`);
+    const stripePromis = loadStripe(`pk_test_51MtaX3EaztW7P3dwWrLVuJxYN3AxDdkT3lY8TSLQx3NfCB3QLT097SHAWo5PGWhDMQrStZ6591HXadhRhAegyHj500CLjH2QYM`);
     const appearance = {
         theme: 'night',
         labels: 'hidden',
