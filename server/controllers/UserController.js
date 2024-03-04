@@ -1,6 +1,7 @@
 import UserSchema from "../models/User.js";
 import jwt from "jsonwebtoken"
 import autoMailer from "../utils/AutoMailer.js";
+import User from "../models/User.js";
 
 const HandleUserRegister = async (req, res) => {
     try {
@@ -199,11 +200,23 @@ const handleResendOtp = async (req, res) => {
 }
 
 
+const getAllUsers = async (req, res) => {
+    try {
+        const findUsers = await User.find();
+        res.status(200).json({ users: findUsers });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal Server Error" })
+    }
+}
+
+
 export {
     HandleUserRegister,
     handleLoginUser,
     handleForgotPassword,
     handleVerifyOtp,
     handleResetPassword,
-    handleResendOtp
+    handleResendOtp,
+    getAllUsers
 };

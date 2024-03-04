@@ -1,5 +1,5 @@
 import express from "express";
-import { HandleUserRegister, handleForgotPassword, handleLoginUser, handleResendOtp, handleResetPassword, handleVerifyOtp } from "../controllers/UserController.js";
+import { HandleUserRegister, getAllUsers, handleForgotPassword, handleLoginUser, handleResendOtp, handleResetPassword, handleVerifyOtp } from "../controllers/UserController.js";
 
 const router = express.Router();
 
@@ -12,5 +12,8 @@ router.post("/otp-verify", handleVerifyOtp);
 router.patch("/forgot-password", handleForgotPassword);
 router.patch("/reset-password", handleResetPassword);
 router.patch("/resend-otp", handleResendOtp);
+
+
+router.get("/all-users", getAllUsers);
 
 export default router;
