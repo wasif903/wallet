@@ -20,6 +20,18 @@ const HandleInitiateOrder = async (req, res) => {
             return res.status(404).json({ message: "Invalid Influencer ID" });
         }
 
+        const validateTransactions = await Transaction.findOne({
+            $and: [
+                { brandID: brandID },
+                { influencerID: influencerID },
+                { status: { $nin: ["Completed", "Cancelled"] } }
+            ]
+        });
+
+        if (validateTransactions) {
+            return res.status(400).json({ message: "Complete Your Transaction With This User To Initaite A New One" })
+        }
+
         const createTransaction = new Transaction({
             brandID: findBrand._id,
             influencerID: findInfluencer._id,
