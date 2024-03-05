@@ -74,13 +74,26 @@ const HandlePayToInfluencer = async (req, res) => {
             return res.status(400).json({ message: "Super Admin Card Not Attached" })
         }
 
+        const validateTransactions = await Transaction.findOne({
+            $and: [
+                { brandID: brandID },
+                { influencerID: influencerID },
+                { status: { $in: ["Pending"] } }
+            ]
+        });
+
+        if (!validateTransactions) {
+            return res.status(400).json({ message: "No Pending Transactions With This User" })
+        }
+
         const paymentIntent = await stripe.paymentIntents.create({
             customer: findCard.customerID,
-            amount: Number(500 * 100),
+            amount: Number(validateTransactions.amount * 100),
             currency: 'usd',
             payment_method: findCard.attachPaymentID,
             description: `Purchased Service`,
         })
+
         const paymentIntentConfirm = await stripe.paymentIntents.confirm(
             paymentIntent.id,
             {
@@ -92,14 +105,9 @@ const HandlePayToInfluencer = async (req, res) => {
             return res.status(400).json({ message: "Payment Failed" })
         }
 
-        const createTransaction = new Transaction({
-            brandID: findBrand._id,
-            influencerID: findInfluencer._id,
-            amount: 500,
-            paymentIntentConfirm: paymentIntentConfirm.id
-        })
+        validateTransactions.status = ["In Progress"]
 
-        await createTransaction.save();
+        await validateTransactions.save();
 
         res.status(200).json({ message: "Payment Sent Successfully" })
 

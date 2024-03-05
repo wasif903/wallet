@@ -2,6 +2,8 @@ import UserSchema from "../models/User.js";
 import jwt from "jsonwebtoken"
 import autoMailer from "../utils/AutoMailer.js";
 import User from "../models/User.js";
+import Wallet from "../models/Wallet.js";
+
 
 const HandleUserRegister = async (req, res) => {
     try {
@@ -19,6 +21,18 @@ const HandleUserRegister = async (req, res) => {
                 role: role
             });
             const user_save = await create_user.save();
+
+            if (role === "Influencer") {
+                const validateWallet = await UserSchema.findOne({ userID: user_save._id });
+                if (validateWallet) {
+                    return res.status(200).json({ message: "Wallet Already Created!" })
+                }
+                const createWallet = new Wallet({
+                    userID: user_save._id,
+                    amount: 0
+                });
+                await createWallet.save();
+            }
 
             const token = jwt.sign({
                 _id: user_save._id,
@@ -39,7 +53,6 @@ const HandleUserRegister = async (req, res) => {
         res.status(500).json({ message: "Internal server Error!" })
     }
 }
-
 
 const handleLoginUser = async (req, res) => {
     try {
